@@ -1,0 +1,13 @@
+--- #EC2 SNAPSHOT MODULE
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  gather_facts: no
+  tasks:
+  - name: Take a snapshot of the running instance root volume
+    ec2_snapshot:
+      snapshot_id: snap-xxxxxx #Snapshot-Id to delete
+      state: absent
+      wait: no
+    register: snapshot
+
