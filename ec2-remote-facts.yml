@@ -1,0 +1,12 @@
+--- # EC2 REMOTE FACTS MODULE
+- hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: Gather Facts of all running EC2 Instances
+    ec2_remote_facts:
+      region: "{{ aws_region }}"
+    register: remote_facts
+  - debug: msg= {{ remote_facts }}
+
