@@ -1,0 +1,15 @@
+--- #Finding an EC2 - AMI
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: Basic Provisioning of an AMI from EC2 Instance
+    ec2_ami_find:
+           ami_tags:
+             Name: Lak-New-Ami1
+           no_result_action: fail
+    register: instance
+  - debug: msg={{ ami_find.results[0].ami_id }}
+  - debug: msg={{ ami_find.results[0].name }}
