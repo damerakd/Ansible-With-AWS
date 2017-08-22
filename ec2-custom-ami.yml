@@ -1,0 +1,21 @@
+--- #Creating a Advanced AMI template from an existing image
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: Basic Provisioning of an AMI from EC2 Instance
+    ec2_ami:
+         instance_id: xxxxxx #Your InstanceID
+         wait: no
+         name: lakshman-ami1
+         tags:
+           Name: Lak-New-Ami1
+         device_mapping:
+           - device_name: /dev/sdb1
+             size: 100
+             delete_on_termination: true
+             volume_type: gp2
+    register: instance
+
