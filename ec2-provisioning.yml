@@ -1,0 +1,12 @@
+--- #EC2 MODULE PROVISIONING
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  become: yes
+  gather_facts: yes
+  tasks:
+  - name: Basic Provisioning of two t2.micro EC2 instances
+    ec2:
+     image: ami-f0091d91 #ImageID of the instance you require
+     instance_type: t2.micro
+     count: 2 # Number of insances
