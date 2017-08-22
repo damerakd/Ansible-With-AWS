@@ -1,0 +1,24 @@
+
+--- #Creating a EC2- Security-Group
+- hosts: localhost
+  remote_user: ec2-user
+  become_method: sudo
+  connection: local
+  gather_facts: yes
+  tasks: 
+  - name: Creating a Basic Security Group
+     ec2_group:
+       name: kdamera-SG
+       description: This is Lakshman SG
+       vpc_id: xxxxxxxx # Your VPC-ID
+       rules:
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+       rules_egress:
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+
