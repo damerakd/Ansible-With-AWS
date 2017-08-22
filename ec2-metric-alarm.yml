@@ -1,0 +1,21 @@
+--- # EC2 METRIC ALARM
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  become: yes
+  gather_facts: yes
+  tasks:
+  - name: Create a Basic CPU Alarm
+    ec2_metric_alarm:
+      state: present
+      name: MyFirstAlarm
+      metric: "CPUUtilization"
+      namespace: "AWS/EC2"
+      statistic: Average
+      comparision: ">="
+      threshold: 30.0
+      period: 300 #Seconds
+      evaluation_periods: 6 #Consecutive Periods
+      unit: "Percent"
+      description: "This is Alarm Which Fires When Cpu Utilization is> 30% for 30 minutes"
+      dimensions: {'InstanceID' : 'xxxxxxx' }
