@@ -1,0 +1,18 @@
+--- # EC2-AMI-COPY
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  become: yes
+  gather_facts: no
+  tasks:
+  - name : Copying AMI from one region to another
+    ec2_ami_copy:
+      source_region: "{{ aws_region }}" 
+      dest_region: us-east-1 # Destination region you want your AMI
+      source_image_id: ami-91b6aff0 #AMI-ID From which you wish to copy
+      wait: no
+      name: n-virginia-ami-1
+      tags:
+        Name: kdamera-East-Ami-1
+    register: instance
+
