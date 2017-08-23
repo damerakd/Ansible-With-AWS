@@ -1,0 +1,16 @@
+--- #EC2 VPC INFO
+- hosts: localhost
+  remote_user: ec2_user
+  become: yes
+  connection: local
+  gather_facts: yes
+  tasks:
+  - name: Obtaining Info about the VPC's available
+     ec2_vpc_info:
+       filters:
+         vpc-id: vpc-xxxxxx #Enter Your Vpc-Id here for info
+     register: vpc_info
+  - name: Printing out the facts
+    debug: message=vpc_info
+    debug: msg= {{ vpc_info.vpcs[0].id }} #Retreiving the First Vpc-id
+
