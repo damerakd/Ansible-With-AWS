@@ -1,0 +1,14 @@
+--- # EC2 Volume Module
+- hosts: localhost
+  connection: local
+  become: yes
+  remote_user: kdamera1
+  gather_facts: yes
+  tasks:
+  - name: Labelling an existing volume to easily identify it
+    ec2_tags:
+      resourcce: xxxxxx #Your Volume-Id here
+      state: present
+      tags:
+        Name: data_volume
+    register: vol_tags
