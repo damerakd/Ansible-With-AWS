@@ -1,0 +1,21 @@
+--- # AWS IAM MODULE
+- hosts: localhost
+  connection: ssh
+  remote_user: kdamera1
+  become: yes
+  gather_facts: yes
+  tasks:
+  - name: Creating Multiple IAM users
+    iam:
+     iam_type: user #You can have group also
+     name: "{{ item }}"
+     state: present #For deleting users it is absent
+     password: "xxxxxxx"
+     access_key_state: create
+    with_items:  # Creating a list of users
+    - user1
+    - user2
+    register: output
+  - name: Displaying the formatted JSON output results
+    debug: message= output
+
