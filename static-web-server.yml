@@ -1,0 +1,49 @@
+--- #Ansible playbook to Configure Static Web server and using it to create a New Template
+- hosts: aws #Hostsfile as in /var/ansible/hosts
+  connection: ssh
+  remote_user: ec2-user
+  become: yes
+  gather_facts: yes
+  tasks: 
+  - name: Connect to remote host, executing updates
+    yum: name=* state=latest
+  - name: Install the HTTPD Server
+    yum: name=httpd state=latest
+  - name: Deploy the static website
+    copy: src=../files/index.html  dest=/var/www/html/index.html owner=kdamera1 group=admin mode=0655 backup=yes #Source and Destination ofthe files and the corresponding owner and group he belongs
+  - name: Restart the HTTPD Service
+    service: name=httpd state=restarted
+  - name: Wait for the HTTP port 80 to be listening
+    wait_for: host= ...  port=80 delay=5 #your host name or public DNS name  
+  - name: Testing the site
+    shell: /usr/bin/ get_url http://localhost
+    register: test_results
+  - name: Displaying the test results
+    debug: message=test_results
+
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  become: yes
+  gather_facts: yes
+  tasks: 
+  - name: Taking a snapshot 
+    ec2_snapshot:
+      instance_id: xxxxxx #Your Instance-Id goes here
+      device_name: /dev/sdb
+      description: Initial Deployment Backup
+      wait: no
+    register: results_snapshot
+  - name: Displaying the snapshot results
+    debug: message=results_snapshot
+  - name: Creating a New Template AMI from our Instance
+    ec2_ami:
+       instance_id: i-xxxxxx #Your instance-id goes here.
+       wait: no
+       name: mynewansibletemplate1
+       tags:
+        Name: MyAnsibleTemplate
+        Service: TestingAMITemplate
+    register: new_ami_results
+  - name: Displaying the AMI Creation Results
+    debug: message=new_ami_results 
