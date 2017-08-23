@@ -1,0 +1,24 @@
+--- #AWS S3 MODULE
+- hosts: localhost
+  connection: local
+  remote_user: kdamera1
+  become: yes
+  gather_facts: yes
+  tasks:
+  - name: Create an S3 bucket
+    s3:
+      bucket: xxxxxxx #Unique Bucket name
+      mode: create
+      permission: public-read-write
+    register: create_bucket
+  - name: Copying Files To the Above created Bucket 
+    s3:
+      bucket: #Above bucket name here
+      object: #File or folder You want to create
+      src: /home/kdamera1/Playbooks/Filename.yml
+      mode: put
+    register: copy_files
+  - name: Creation of Bucket Output
+    debug: message=create_bucket
+  - name: Copying Output
+    debug: message=copy_files
