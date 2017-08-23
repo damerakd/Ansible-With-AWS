@@ -1,0 +1,14 @@
+--- #EC2 VPC
+- hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: yes
+  remote_user: kdamera1
+  tasks:
+  - name: Create a Basic VPC using 10.x.x.x Private Network Range
+    ec2_vpc:
+      region: " {{ aws_region }} " # AWS Region goes here
+      state: present
+      cidr_block: 10.1.1.5/24
+    register: vpc_block
+      
