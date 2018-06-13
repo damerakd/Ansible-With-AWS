@@ -1,0 +1,26 @@
+--- # PlayBook To Install The Apache Web Server
+- hosts: apacheweb
+  user: kdamera1
+  sudo: yes
+  gather_facts: yes
+  tasks:
+    - name: Date TimeStamp from when PlayBook Starts
+      command: /usr/bin/date    
+      register: timestamp_start
+    - debug: var=timestamp_start
+    - name: Install The Apache Web Server
+      yum: pkg=httpd state=latest
+      notify: Start HTTPD
+    - name: Verify that the Web Service is Running
+      command: systemctl status httpd
+      register: result
+    - debug: var=result
+    - name: Install Client Software Telnet
+      yum: pkg=telnet state=latest
+    - name: Log all the packages Installed On the System
+      command: yum list installed
+      register: installed_result
+    - debug: var=installed_result
+  handlers:
+    - name: Start HTTPD
+      service: name=httpd state=restarted
